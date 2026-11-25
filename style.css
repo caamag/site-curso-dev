@@ -1,0 +1,849 @@
+/* =====================================================================
+   STYLE.CSS · o VISUAL do site
+   =====================================================================
+   Como ler este arquivo:
+   - Cada bloco começa com um SELETOR (ex.: .botao) que diz QUEM vai ser estilizado.
+   - Dentro das chaves { } vêm as PROPRIEDADES: propriedade: valor;
+   - O ponto (.) antes do nome indica uma CLASSE do HTML: .botao = class="botao"
+   - O jogo da velha (#) indica um ID: #menu = id="menu"
+
+   Ordem dos blocos (a mesma das apostilas):
+    1. Cores e fontes (variáveis)
+    2. Base
+    3. Peças que se repetem
+    4. Topo
+    5. Início (hero)
+    6. Seções e sobre
+    7. Serviços
+    8. Projetos
+    9. Processo
+   10. Contato
+   11. Rodapé
+   12. Tablet e celular (sempre no FINAL do arquivo!)
+   ===================================================================== */
+
+
+/* ===== 1. CORES E FONTES (variáveis) =====
+   Em vez de escrever #0891B2 em vinte lugares, damos um NOME para a cor
+   (--ciano) e usamos o nome com var(--ciano).
+   Quer mudar a cor do site inteiro? Muda aqui, em um lugar só. */
+:root {
+  --fundo: #F6F8FC;        /* fundo da página (quase branco) */
+  --superficie: #FFFFFF;   /* fundo dos cartões */
+  --texto: #0B1220;        /* cor principal dos textos */
+  --texto-suave: #55627A;  /* textos secundários, mais clarinhos */
+  --borda: #E3E8F1;        /* bordas finas dos cartões */
+  --ciano: #0891B2;        /* cor de destaque 1 */
+  --indigo: #4F46E5;       /* cor de destaque 2 */
+  --gradiente: linear-gradient(135deg, #0891B2, #4F46E5); /* degradê: a assinatura do site */
+  --sombra: 0 10px 30px rgba(11, 18, 32, 0.06);           /* sombra bem leve */
+  --fonte: "Plus Jakarta Sans", Arial, sans-serif;         /* fonte principal */
+  --fonte-mono: "JetBrains Mono", "Courier New", monospace; /* fonte "de código" */
+}
+
+
+/* ===== 2. BASE ===== */
+
+/* O asterisco (*) seleciona TODOS os elementos.
+   Zeramos as margens que o navegador coloca sozinho e usamos
+   box-sizing: border-box para que a borda e o espaço interno
+   não aumentem o tamanho das caixas. */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Rolagem suave ao clicar nos links do menu */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--fonte);
+  color: var(--texto);
+  line-height: 1.6; /* espaço entre as linhas do texto */
+  /* Fundo com duas "manchas" suaves de cor (radial-gradient) por cima da cor de fundo */
+  background:
+    radial-gradient(900px 600px at 85% -10%, rgba(8, 145, 178, 0.10), transparent 60%),
+    radial-gradient(800px 600px at -10% 30%, rgba(79, 70, 229, 0.07), transparent 60%),
+    var(--fundo);
+}
+
+/* Imagens nunca ficam maiores que a caixa onde estão */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Links sem sublinhado e com a mesma cor do texto ao redor */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+/* ===== 3. PEÇAS QUE SE REPETEM ===== */
+
+/* Texto em degradê.
+   Imagine pintar a parede com degradê e cobrir tudo com fita,
+   deixando de fora só o formato das letras:
+   - background pinta o fundo com o degradê
+   - background-clip: text recorta esse fundo no formato do texto
+   - color: transparent deixa a letra transparente para o degradê aparecer */
+.destaque {
+  background: var(--gradiente);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Botão base: todos os botões do site usam esta classe */
+.botao {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: 12px; /* cantos arredondados */
+  font-weight: 600;
+  font-size: 0.95rem;
+  font-family: inherit;
+  border: none;
+  cursor: pointer;     /* mostra a "mãozinha" ao passar o mouse */
+}
+
+/* Botão principal: fundo em degradê e texto branco */
+.botao-principal {
+  background: var(--gradiente);
+  color: #FFFFFF;
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.25);
+}
+
+/* Botão secundário: branco com borda */
+.botao-secundario {
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  color: var(--texto);
+}
+
+/* Sobretítulo: o textinho pequeno em cima dos títulos das seções */
+.sobretitulo {
+  font-family: var(--fonte-mono);
+  font-size: 0.75rem;
+  letter-spacing: 3px;        /* espaço entre as letras */
+  text-transform: uppercase;  /* tudo em MAIÚSCULAS */
+  color: var(--ciano);
+  margin-bottom: 12px;
+}
+
+/* ::before cria um pedacinho de texto ANTES do elemento, sem mexer no HTML.
+   Aqui, o travessão do sobretítulo. */
+.sobretitulo::before {
+  content: "— ";
+}
+
+/* Cabeçalho das seções (sobretítulo + título + frase) */
+.cabecalho-secao {
+  max-width: 640px;
+  margin-bottom: 48px;
+}
+
+.cabecalho-secao h2 {
+  /* clamp(mínimo, ideal, máximo): o tamanho se ajusta à largura da tela */
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  line-height: 1.15;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+}
+
+/* "h2 + p" = o parágrafo que vem logo depois do h2 */
+.cabecalho-secao h2 + p {
+  color: var(--texto-suave);
+  font-size: 1.05rem;
+}
+
+/* Versão centralizada do cabeçalho (usada em serviços e processo) */
+.cabecalho-secao.centro {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Painéis e cartões: caixas brancas, arredondadas, com borda e sombra.
+   A vírgula aplica as mesmas regras aos dois seletores. */
+.painel,
+.cartao {
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: var(--sombra);
+}
+
+/* Etiquetas em formato de "pílula", lado a lado */
+.etiquetas {
+  list-style: none;  /* tira as bolinhas da lista */
+  display: flex;     /* coloca os itens lado a lado */
+  flex-wrap: wrap;   /* se não couber, pula para a linha de baixo */
+  gap: 8px;
+}
+
+.etiquetas li {
+  background: var(--fundo);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+
+/* ===== 4. TOPO ===== */
+.topo {
+  position: sticky;  /* rola junto até encostar no alto e então fica preso ali */
+  top: 0;
+  z-index: 10;       /* fica por cima do resto do conteúdo */
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 16px 6%;
+  background: rgba(246, 248, 252, 0.85);  /* fundo um pouco transparente */
+  backdrop-filter: blur(12px);            /* desfoca o que passa atrás, como vidro jateado */
+  border-bottom: 1px solid var(--borda);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+}
+
+/* Quadradinho com a inicial. display: grid + place-items: center
+   centraliza a letra nos dois sentidos. */
+.logo-marca {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--gradiente);
+  color: #FFFFFF;
+  font-weight: 800;
+}
+
+.menu {
+  display: flex;
+  gap: 28px;
+  margin: 0 auto; /* "empurra" o menu para o meio do topo */
+}
+
+.menu a {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--texto-suave);
+  padding: 6px 0;
+  border-bottom: 2px solid transparent; /* linha invisível que aparece no hover */
+}
+
+/* :hover = quando o mouse está em cima.
+   .ativo = classe que o script.js coloca no link da seção atual. */
+.menu a:hover,
+.menu a.ativo {
+  color: var(--ciano);
+  border-bottom-color: var(--ciano);
+}
+
+.botao-topo {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ciano);
+  border: 1px solid rgba(8, 145, 178, 0.4);
+  background: rgba(8, 145, 178, 0.06);
+  padding: 10px 18px;
+  border-radius: 10px;
+}
+
+/* O botão ☰ fica ESCONDIDO no computador. Ele aparece no bloco 12 (celular). */
+.botao-menu {
+  display: none;
+  background: none;
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  width: 42px;
+  height: 42px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+
+/* ===== 5. INÍCIO (HERO) ===== */
+.hero {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr; /* duas colunas, a do texto um pouco mais larga */
+  align-items: center;
+  gap: 56px;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 72px 6% 96px;
+}
+
+/* Selo "Disponível para novos projetos" */
+.selo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 999px; /* valor bem alto = formato de pílula */
+  padding: 6px 14px;
+  margin-bottom: 24px;
+}
+
+/* A bolinha verde do selo (um span vazio no HTML) */
+.ponto {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%; /* 50% = círculo */
+  background: #10B981;
+}
+
+.hero h1 {
+  font-size: clamp(2.4rem, 5.5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -2px;
+  margin-bottom: 24px;
+}
+
+.hero-frase {
+  font-size: 1.1rem;
+  color: var(--texto-suave);
+  max-width: 520px;
+  margin-bottom: 32px;
+}
+
+.hero-frase strong {
+  color: var(--texto);
+}
+
+/* Grupo de botões lado a lado (usado no início e no sobre) */
+.botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* position: relative transforma a .hero-visual na REFERÊNCIA
+   para os cartões com position: absolute logo abaixo.
+   Sem isso, os cartões iriam parar no canto da página! */
+.hero-visual {
+  position: relative;
+}
+
+.hero-foto {
+  width: 100%;
+  height: 480px;
+  object-fit: cover; /* preenche a área sem deformar a foto (corta as sobras) */
+  border-radius: 24px;
+  border: 1px solid var(--borda);
+  box-shadow: var(--sombra);
+}
+
+/* Cartões que "flutuam" sobre a borda direita da foto */
+.cartao-flutuante {
+  position: absolute;
+  right: -24px; /* valor negativo = passa um pouco para fora da foto */
+  display: flex;
+  flex-direction: column; /* strong em cima, span embaixo */
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 14px;
+  padding: 12px 18px;
+  box-shadow: var(--sombra);
+}
+
+.cartao-flutuante span {
+  font-size: 0.8rem;
+  color: var(--texto-suave);
+}
+
+.cartao-anos {
+  top: 40px;
+}
+
+.cartao-area {
+  top: 150px;
+}
+
+/* Janelinha de código escura no canto de baixo, à esquerda */
+.cartao-codigo {
+  position: absolute;
+  left: -40px;
+  bottom: 32px;
+  background: #0B1220;
+  color: #E6EDF7;
+  border-radius: 14px;
+  padding: 14px 18px;
+  font-family: var(--fonte-mono);
+  font-size: 0.8rem;
+  line-height: 1.7;
+  box-shadow: 0 16px 40px rgba(11, 18, 32, 0.25);
+}
+
+/* Os textos entre aspas da janelinha ficam amarelos (e sem itálico) */
+.cartao-codigo em {
+  font-style: normal;
+  color: #FCD34D;
+}
+
+/* As 3 bolinhas coloridas da janelinha */
+.bolinhas {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.bolinhas span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #F87171; /* vermelha */
+}
+
+/* :nth-child(2) escolhe o 2º filho: assim cada bolinha ganha uma cor */
+.bolinhas span:nth-child(2) {
+  background: #FBBF24; /* amarela */
+}
+
+.bolinhas span:nth-child(3) {
+  background: #34D399; /* verde */
+}
+
+
+/* ===== 6. SEÇÕES E SOBRE ===== */
+
+/* Todas as seções: no máximo 1180px de largura, centralizadas (margin: 0 auto) */
+.secao {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 88px 6%;
+}
+
+.sobre-grade {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 24px;
+  align-items: start; /* cada painel com a sua própria altura, alinhados pelo topo */
+}
+
+.painel h3 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+
+.painel p {
+  color: var(--texto-suave);
+  margin-bottom: 14px;
+}
+
+.painel strong {
+  color: var(--texto);
+}
+
+/* Lista de informações em 2 colunas, entre duas linhas finas */
+.info-lista {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 20px 0;
+  margin: 8px 0 20px;
+  border-top: 1px solid var(--borda);
+  border-bottom: 1px solid var(--borda);
+}
+
+.info-lista span {
+  display: block; /* o rótulo fica em cima, o valor embaixo */
+  font-size: 0.75rem;
+  color: var(--texto-suave);
+}
+
+.painel .disponivel {
+  color: #059669; /* verde */
+}
+
+/* Seletor mais específico: só vale para o .grupo-titulo de dentro de um .painel,
+   e por isso vence a regra geral ".painel p" lá de cima. */
+.painel .grupo-titulo {
+  font-family: var(--fonte-mono);
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 20px 0 10px;
+}
+
+
+/* ===== 7. SERVIÇOS ===== */
+
+/* O grid que se arruma sozinho:
+   "coloque quantas colunas couberem, cada uma com no mínimo 280px".
+   Tela larga = 3 colunas. Celular = 1 coluna. Sem nenhuma regra extra! */
+.grade-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+/* Quadradinho com fundo suave onde fica o emoji */
+.icone {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(8, 145, 178, 0.08);
+  border: 1px solid rgba(8, 145, 178, 0.2);
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+}
+
+.cartao h3 {
+  font-size: 1.15rem;
+  margin-bottom: 8px;
+}
+
+.cartao p {
+  color: var(--texto-suave);
+  margin-bottom: 16px;
+}
+
+.lista-check {
+  list-style: none;
+}
+
+.lista-check li {
+  font-size: 0.92rem;
+  margin-bottom: 6px;
+}
+
+/* Um ✓ colorido antes de cada item da lista */
+.lista-check li::before {
+  content: "✓ ";
+  color: var(--ciano);
+  font-weight: 700;
+}
+
+
+/* ===== 8. PROJETOS ===== */
+
+/* O cartão de projeto não tem espaço interno: a imagem encosta nas bordas.
+   overflow: hidden corta a imagem nos cantos arredondados do cartão. */
+.projeto {
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Referência para a categoria e o número ficarem por cima da imagem */
+.projeto-capa {
+  position: relative;
+}
+
+.projeto-capa img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Etiqueta da categoria, no canto de cima à esquerda da imagem */
+.categoria {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--ciano);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+/* Número do projeto, no canto de cima à direita */
+.numero {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  font-family: var(--fonte-mono);
+  font-size: 0.8rem;
+  color: #FFFFFF;
+}
+
+/* Como o cartão não tem padding, damos margem só aos textos */
+.projeto h3,
+.projeto p,
+.projeto .etiquetas {
+  margin-left: 24px;
+  margin-right: 24px;
+}
+
+.projeto h3 {
+  margin-top: 22px;
+}
+
+.projeto .etiquetas {
+  margin-bottom: 24px;
+}
+
+
+/* ===== 9. PROCESSO ===== */
+.processo {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 colunas iguais */
+  gap: 24px;
+  text-align: center;
+  position: relative; /* referência para a linha tracejada abaixo */
+}
+
+/* A linha tracejada "fantasma": não existe no HTML, é criada pelo ::before.
+   Ela passa por trás dos círculos dos números. */
+.processo::before {
+  content: "";
+  position: absolute;
+  top: 32px;   /* metade da altura do círculo (64px) */
+  left: 12%;
+  right: 12%;
+  border-top: 2px dashed var(--borda);
+}
+
+/* Círculo com o número da etapa.
+   Tem fundo branco e position: relative, então fica NA FRENTE da linha
+   e a esconde dentro dele: parece que os círculos estão ligados por um fio. */
+.passo-numero {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: var(--superficie);
+  border: 2px solid var(--ciano);
+  color: var(--ciano);
+  font-family: var(--fonte-mono);
+  font-weight: 500;
+}
+
+.processo h3 {
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+}
+
+.processo p {
+  font-size: 0.92rem;
+  color: var(--texto-suave);
+}
+
+
+/* ===== 10. CONTATO ===== */
+
+/* Caixa grande e arredondada, em duas colunas */
+.contato-caixa {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  padding: 48px;
+  border-radius: 28px;
+  background:
+    radial-gradient(500px 300px at 0% 100%, rgba(8, 145, 178, 0.10), transparent 70%),
+    var(--superficie);
+  border: 1px solid var(--borda);
+  box-shadow: var(--sombra);
+}
+
+.contato-texto h2 {
+  font-size: clamp(1.9rem, 4vw, 2.5rem);
+  line-height: 1.15;
+  letter-spacing: -1px;
+  margin-bottom: 16px;
+}
+
+/* O sinal > pega só os parágrafos que são filhos DIRETOS de .contato-texto */
+.contato-texto > p {
+  color: var(--texto-suave);
+  margin-bottom: 24px;
+}
+
+/* Cada contato (WhatsApp, Instagram) vira um cartãozinho */
+.contato-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  border: 1px solid var(--borda);
+  border-radius: 14px;
+  background: var(--fundo);
+}
+
+/* Ícone um pouco menor e sem margem dentro do cartãozinho */
+.contato-item .icone {
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.contato-item small {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--texto-suave);
+}
+
+/* Formulário: um campo embaixo do outro */
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formulario label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* Campos arredondados.
+   font: inherit faz os campos usarem a mesma fonte do site
+   (o navegador, sozinho, usa outra fonte nos campos). */
+.formulario input,
+.formulario select,
+.formulario textarea {
+  font: inherit;
+  color: var(--texto);
+  background: var(--fundo);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+}
+
+.formulario button {
+  justify-content: center; /* centraliza o texto do botão */
+  margin-top: 6px;
+}
+
+.aviso {
+  font-size: 0.8rem;
+  color: var(--texto-suave);
+  text-align: center;
+}
+
+
+/* ===== 11. RODAPÉ ===== */
+.rodape {
+  display: flex;
+  justify-content: space-between; /* logo na esquerda, texto na direita */
+  align-items: center;
+  gap: 16px;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 32px 6%;
+  border-top: 1px solid var(--borda);
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+
+
+/* ===== 12. TABLET E CELULAR =====
+   @media = "media query": as regras de dentro SÓ valem quando a tela
+   é menor que o tamanho indicado. Ficam sempre no FINAL do CSS,
+   para vencerem as regras que vêm antes. */
+
+/* --- Tablet: telas de até 900px --- */
+@media (max-width: 900px) {
+  /* Uma coluna só: o que estava lado a lado fica um embaixo do outro */
+  .hero,
+  .sobre-grade,
+  .contato-caixa {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-foto {
+    height: 380px;
+  }
+
+  /* Cartões flutuantes passam para DENTRO da foto (evita rolagem para o lado) */
+  .cartao-flutuante {
+    right: 12px;
+  }
+
+  .cartao-anos {
+    top: 16px;
+  }
+
+  .cartao-area {
+    top: 96px;
+  }
+
+  .cartao-codigo {
+    left: 12px;
+    bottom: 16px;
+  }
+
+  /* Processo em 2 colunas e sem a linha tracejada */
+  .processo {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .processo::before {
+    display: none;
+  }
+}
+
+/* --- Celular: telas de até 760px --- */
+@media (max-width: 760px) {
+  .botao-topo {
+    display: none; /* esconde o botão de orçamento */
+  }
+
+  .botao-menu {
+    display: block;    /* mostra o botão ☰ */
+    margin-left: auto; /* empurra o botão para a direita */
+  }
+
+  /* O menu fica escondido e, quando aparece, vira uma lista embaixo do topo.
+     top: 100% = logo abaixo do topo (o topo é a referência dele). */
+  .menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px 6%;
+    background: var(--superficie);
+    border-bottom: 1px solid var(--borda);
+  }
+
+  /* Só aparece quando o menu tem as DUAS classes: menu e aberto.
+     Quem coloca e tira a classe "aberto" é o script.js. */
+  .menu.aberto {
+    display: flex;
+  }
+
+  .contato-caixa {
+    padding: 28px;
+  }
+
+  .info-lista {
+    grid-template-columns: 1fr;
+  }
+
+  .rodape {
+    flex-direction: column;
+    text-align: center;
+  }
+}
